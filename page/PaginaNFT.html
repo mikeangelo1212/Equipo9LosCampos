@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!--No olvides agregar el css en la misma ruta-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NFT</title>
+    <link rel="stylesheet" type="text/css" href="PaginaNFT.css">   
+</head>
+<body>
+    <h1>Bienvenido a transacciones</h1>
+    <form action="/uploadNFT" method="POST" enctype="multipart/form-data">
+        <img src="resources/Happy.gif" class="img-fluid" alt="GIF Happy" width="200" height="150">
+        <h1>Con NFTS [YIPPIIE]</h1>
+        <!--[Deberia de asignarse un ID de manera automatica]-->
+        <div>
+            <h2>Introduzca el nombre aqui: </h2>
+            <input type="text" id="name" name="name" required>
+            <h2>Elija su archivo para convertir en NFT</h2>
+            <input type="file" id="image" name="image" accept="image/*" required>
+            <h2> Agregue una descripcion: <h2>
+            <input type="text" id="description" name="description" required>
+            <h2><button type="submit">Confirmar</button></h2>
+            <img src="resources/Spin.gif" class="img-fluid" alt="GIF Spin" width="200" height="150">
+            <!--Tambien hay un gatito crunch y fresh, seguramente sean usados para error y valido-->
+            <!--ESTE NO ES EL PROYECTO, solo es para confirmar que este funcionando correctamente-->
+            <!--Este codigo ha sido proporcionado por el profesor-->
+        </div>
+    </form>
+</body>
+</html>
