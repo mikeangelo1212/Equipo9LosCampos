@@ -7,6 +7,27 @@ h1{
     font-size: 42px;
 }
 
+.img-fluid{
+    width: 300px; /* Specify the width */
+    height: 200px; /* Specify the height */
+    background-image: url('resources/Happy.gif'); /* Initial background image */
+    background-repeat: no-repeat;
+    background-position: 0px -40px;
+    background-size: cover; /* Cover the entire area of the element */
+    transition: background-image 0.2s ease-in-out; /* Smooth transition */
+    border-style: double;
+    border-color: rgb(221, 171, 182);
+    border-radius: 50%;
+}
+
+.img-fluid:hover{
+    background-position: 0px;
+    background-image: url('resources/Fresh.gif'); /* Change on hover */
+    border-style: double;
+    border-color: rgb(221, 171, 182);
+    border-radius: 50%;
+}
+
 img:hover{
     border-style: double;
     border-color: rgb(221, 171, 182);

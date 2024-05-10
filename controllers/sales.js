@@ -110,4 +110,4 @@ module.exports = {
     getSales:getSales,
     createSale:createSale,
     getSalesByUserId:getSalesByUserId
-}x
+}
