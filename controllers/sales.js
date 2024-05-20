@@ -7,25 +7,24 @@ const {ethers} = require('ethers')
 const contract = require('../artifacts/contracts/Sales.sol/Sales.json')
 const { create } = require('domain')
 const {
-    PINATA_API_KEY,
-    PINATA_SECRET_KEY,
-    API_URL,
-    PRIVATE_KEY,
-    PUBLIC_KEY,
-    SALES_CONTRACT
+    PRIVATE_KEY='6a449060eb69003b6e940c0aa6714b581f07ffa9df4f49573f53ce2895f58f6a',
+    API_URL='https://eth-sepolia.g.alchemy.com/v2/PWckOZRBD26XHsnbRLSA2D6QQdrZYFgB',
+    PUBLIC_KEY='0x6ae01F86Bf271ED5b30Ec3B11bD9d02972712cC3',
+    SALES_CONTRACT='0x56DaBa5180265F7b8143e7211Fd93151E7989C79',
 } = process.env
 
 async function createTransaction(provider,method,params) {
-    const provider = new ethers.providers.JsonRpcProvider(API_URL);
-    const waller = new ethers.Wallet(PRIVATE_KEY,provider);
+    //const provider = new ethers.providerss.JsonRpcProvider(API_URL);
+    //const wallet = new ethers.Wallet(PRIVATE_KEY,provider);
+    //const waller?????
     const etherInterface = new ethers.utils.Interface(contract.abi);
     const nonce = await provider.getTransactionCount(PUBLIC_KEY,'latest');
     const gasPrice = await provider.getGasPrice();
     const network = await provider.getNetwork();
     const {chainid} = network;
     const transaction = {
-        from : PUBLIC_KEY,
-        to: SALES_CONTRACT,
+        from : PUBLIC_KEY||0x6ae01F86Bf271ED5b30Ec3B11bD9d02972712cC3,
+        to: SALES_CONTRACT||0x56DaBa5180265F7b8143e7211Fd93151E7989C79,
         nonce,
         chainid,
         gasPrice,
@@ -50,7 +49,7 @@ async function createSale(userId, items,prices) {
 }
 
 async function getSales() {
-    const provider = new ethers.provider.JsonRpcProvider(API_URL);
+    const provider = new ethers.providers.JsonRpcProvider(API_URL);
     const salesContract = new ethers.Contract(
         SALES_CONTRACT,
         contract.abi,
@@ -65,7 +64,7 @@ async function getSales() {
 }
 
 async function getSale(saleId) {
-    const provider = new ethers.provider.JsonRpcProvider(API_URL);
+    const provider = new ethers.providers.JsonRpcProvider(API_URL);
     const salesContract = new ethers.Contract(
         SALES_CONTRACT,
         contract.abi,
@@ -77,7 +76,7 @@ async function getSale(saleId) {
 }
 
 async function getSalesByUserId(userId){
-    const provider = new ethers.provider.JsonRpcProvider(API_URL);
+    const provider = new ethers.providers.JsonRpcProvider(API_URL);
     const salesContract = new ethers.Contract(
         SALES_CONTRACT,
         contract.abi,

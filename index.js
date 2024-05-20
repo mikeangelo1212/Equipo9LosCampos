@@ -1,24 +1,29 @@
 const express = require('express');
-// const multer = require('multer');
+const multer = require('multer');
 const app = express();
 const path = require('path');
 const fs = require('fs');
 const nfts = require('./scripts/nfts');
 const userRoutes = require('./routes/user.js')
+const saleRoutes = require('./routes/sale.js')
 const bodyParser = require('body-parser')
-const saleRouters = require('./routers/user.js')
 app.use(bodyParser.urlencoded({
     extended:true
 }))
 app.use(bodyParser.json())
 
+//esto relaciona nuestra '/api' con las otras partes de los comandos
 app.use('/api',userRoutes)
+app.use('/api',saleRoutes)
+
+//pal css y el html y jaladas y todo lo que se referencie sepa donde esta
+app.use(express.static("page"))
 
 app.use(express.static(path.join(__dirname,'public')))
 const upload = multer({dest:'uploads/'})
 
 app.get('/',(req,res)=>{
-    res.sendFile(path.join(__dirname,'page/form.html'))
+    res.sendFile(path.join(__dirname,'page/PaginaNFT.html'))
 })
 
 app.post('/upload NFT',upload.single('image'),(req,res)=>{
