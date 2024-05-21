@@ -14,6 +14,9 @@ contract Sales is Ownable{
         uint256[] prices;
     }
     mapping(uint256 => SalesStruct) public sales;
+    
+    //verificar como funciona logicamente esta mamada para los gatitos
+    //agregar objetos al ticket de la venta
     function insertSale(uint256 userId,string[] memory items, uint256[] memory prices)
     public onlyOwner returns(uint256) {
         _salesId.increment();

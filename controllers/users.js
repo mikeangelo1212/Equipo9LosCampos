@@ -12,14 +12,14 @@ const {
     USER_CONTRACT='0x370862C25E8E88eAd1Ac1210FB9Da856a1351e0B'
 } = process.env
 
-
+//este tambien es igual siempre, el consoloe log en la linea 22 esta de mas
 async function createTransaction(provider, method, param){
     const etherInterface = new ethers.utils.Interface(contract.abi)
     const nonce = await provider.getTransactionCount(PUBLIC_KEY, 'latest')
     const gasPrice = await provider.getGasPrice();
     const network = await provider.getNetwork();
     const {chainId} = network;
-    console.log(`${param}`)
+    console.log(`Ejecutando transaccion: ${param}`)
     const transaction = {
         from: PUBLIC_KEY,
         to: USER_CONTRACT,
