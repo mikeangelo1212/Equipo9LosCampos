@@ -19,7 +19,7 @@ async function createTransaction(provider, method, param){
     const gasPrice = await provider.getGasPrice();
     const network = await provider.getNetwork();
     const {chainId} = network;
-    console.log(param)
+    console.log(`${param}`)
     const transaction = {
         from: PUBLIC_KEY,
         to: USER_CONTRACT,
@@ -35,7 +35,7 @@ async function createUser(firstname, lastname){
     const provider = new ethers.providers.JsonRpcProvider(API_URL);
     const wallet = new ethers.Wallet(PRIVATE_KEY, provider);
     console.log(firstname,lastname)
-    const transaction = await createTransaction(provider,"insert",[firstname,lastname])//antes insertUser ahora insert
+    const transaction = await createTransaction(provider,"insertUser",[firstname,lastname])//antes insertUser ahora insert
     const estimateGas = await provider.estimateGas(transaction);
     transaction["gasLimit"] = estimateGas;
     const singedTx = await wallet.signTransaction(transaction);
@@ -69,14 +69,14 @@ async function getUser(userId){
         contract.abi,
         provider
     )
-    const result = await userContract.getUsersById(userId);//mismo del User.sol
+    const result = await userContract.getUserById(userId);//mismo del User.sol
     return formatUser(result)
 }
  
 async function updateAmount(userId,amount){
     const provider = new ethers.providers.JsonRpcProvider(API_URL);
     const wallet = new ethers.Wallet(PRIVATE_KEY, provider);
-    const transaction = await createTransaction(provider,"registerSale",[userId,amount])
+    const transaction = await createTransaction(provider,"registrarSale",[userId,amount])
     const estimateGas = await provider.estimateGas(transaction);
     transaction["gasLimit"] = estimateGas;
     const singedTx = await wallet.signTransaction(transaction);

@@ -24,9 +24,11 @@ const upload = multer({dest:'uploads/'})
 
 app.get('/',(req,res)=>{
     res.sendFile(path.join(__dirname,'page/PaginaNFT.html'))
+    console.log("Bienvenido a la pagina")
 })
 
-app.post('/upload NFT',upload.single('image'),(req,res)=>{
+app.post('/uploadNFT',upload.single('image'),(req,res)=>{
+    console.log("Esto deberia subir un nft, muy mal")
     const image = req.file
     const {name , description} = req.body;
     const destinationPath = `uploads/${image.originalname}`
@@ -36,7 +38,7 @@ app.post('/upload NFT',upload.single('image'),(req,res)=>{
             res.status(500).send('Error saving image')
         }
         else{
-            var result = await nfts.CreateNFT({
+            var result = await nfts.createNFT({
                 imageRoute:destinationPath,
                 name:name,
                 description:description

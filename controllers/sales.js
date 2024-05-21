@@ -10,7 +10,7 @@ const {
     PRIVATE_KEY='6a449060eb69003b6e940c0aa6714b581f07ffa9df4f49573f53ce2895f58f6a',
     API_URL='https://eth-sepolia.g.alchemy.com/v2/PWckOZRBD26XHsnbRLSA2D6QQdrZYFgB',
     PUBLIC_KEY='0x6ae01F86Bf271ED5b30Ec3B11bD9d02972712cC3',
-    SALES_CONTRACT='0x56DaBa5180265F7b8143e7211Fd93151E7989C79',
+    SALES_CONTRACT='0x56DaBa5180265F7b8143e7211Fd93151E7989C79'
 } = process.env
 
 async function createTransaction(provider,method,params) {
@@ -21,12 +21,13 @@ async function createTransaction(provider,method,params) {
     const nonce = await provider.getTransactionCount(PUBLIC_KEY,'latest');
     const gasPrice = await provider.getGasPrice();
     const network = await provider.getNetwork();
-    const {chainid} = network;
+    const {chainId} = network;
+    console.log(`Creando transaccion: ${params}`)
     const transaction = {
-        from : PUBLIC_KEY||0x6ae01F86Bf271ED5b30Ec3B11bD9d02972712cC3,
-        to: SALES_CONTRACT||0x56DaBa5180265F7b8143e7211Fd93151E7989C79,
+        from : PUBLIC_KEY,
+        to: SALES_CONTRACT,
         nonce,
-        chainid,
+        chainId,
         gasPrice,
         data:etherInterface.encodeFunctionData(method, params)
     }
@@ -34,6 +35,7 @@ async function createTransaction(provider,method,params) {
 }
 
 async function createSale(userId, items,prices) {
+    console.log(`Creando ventas: ${prices}`)
     const provider = new ethers.providers.JsonRpcProvider(API_URL);
     const wallet = new ethers.Wallet(PRIVATE_KEY,provider);
     const transaction = await createTransaction(provider,"insertSale",[userId,items,prices])
@@ -61,6 +63,7 @@ async function getSales() {
     result.forEach((element => {
         sales.push(formatSale(element))
     }))
+    return sales;
 }
 
 async function getSale(saleId) {
@@ -88,6 +91,7 @@ async function getSalesByUserId(userId){
     result.forEach((element)=> {
         sales.push(formatSale(element))
     })
+    return sales;
 }
 
 function formatSale(info) {

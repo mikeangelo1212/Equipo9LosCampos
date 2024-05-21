@@ -6,12 +6,11 @@ const axios = require('axios')
 
 const contract = require('../artifacts/contracts/NFTContract.sol/NFTClase.json')
 const {
-    PINATA_API_KEY,
-    PINATA_SECRET_KEY,
-    API_URL,
-    PRIVATE_KEY,
-    PUBLIC_KEY,
-    CONTRACT_ADDRESS
+    PRIVATE_KEY='6a449060eb69003b6e940c0aa6714b581f07ffa9df4f49573f53ce2895f58f6a',
+    API_URL='https://eth-sepolia.g.alchemy.com/v2/PWckOZRBD26XHsnbRLSA2D6QQdrZYFgB',
+    PUBLIC_KEY='0x6ae01F86Bf271ED5b30Ec3B11bD9d02972712cC3', 
+    PINATA_API_KEY='aa12bfcb8a0c0ebc3701',
+    PINATA_SECRET_KEY='f8ef630c2069868b42bafcfd6cd0c2e4526af0dcdfd25c38f83115009d7e1f49'
 } = process.env
 
 async function createImgInfo(imageRoute){
@@ -25,7 +24,7 @@ async function createImgInfo(imageRoute){
     const stream = fs.createReadStream(imageRoute);
     const data = new FormData()
     data.append("file",stream)
-    const fileResponse = await axios.post("https://api.pinata.cloud/pinning/pinFileToIPFS",data, {
+    const fileResponse = await axios.post(`https://api.pinata.cloud/pinning/pinFileToIPFS`,data, {
         headers:{
             "Content-type":`multipart/form-data: boundary=${data._boundary}`,
             pinata_api_key:PINATA_API_KEY,

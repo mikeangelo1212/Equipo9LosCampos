@@ -30,7 +30,7 @@ router.get('/usersales/:id',async (req,res)=>{
 router.post('/sale',async (req,res)=>{
     try{
         let sale = await salesController.createSale(req.body.userId,req.body.items,req.body.prices)
-        let userSale = await userController.updateUser(req.body.userId,req.body.prices.reduce((a, b) => a + b, 0))
+        //let userSale = await userController.updateUser(req.body.userId,req.body.prices.reduce((a, b) => a + b, 0))
         res.json(sale);
     }catch(ex){
         res.status(500).json({ message: ex.message });
