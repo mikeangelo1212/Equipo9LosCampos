@@ -6,6 +6,7 @@ const fs = require('fs');
 const nfts = require('./scripts/nfts');
 const userRoutes = require('./routes/user.js')
 const saleRoutes = require('./routes/sale.js')
+const gatoRoutes = require('./routes/gato.js')
 const bodyParser = require('body-parser')
 app.use(bodyParser.urlencoded({
     extended:true
@@ -15,6 +16,7 @@ app.use(bodyParser.json())
 //esto relaciona nuestra '/api' con las otras partes de los comandos
 app.use('/api',userRoutes)
 app.use('/api',saleRoutes)
+app.use('/api',gatoRoutes)
 
 //pal css y el html y jaladas y todo lo que se referencie sepa donde esta
 app.use(express.static("page"))
