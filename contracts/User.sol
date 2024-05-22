@@ -32,7 +32,7 @@ contract Users is Ownable {
     }
 
     //get que consigue todos los usuarios registrados
-    function getUsers() public view returns( User[] memory) {
+    function getUsers() public view returns(User[] memory) {
         User[] memory usersArray = new User[](_userIds.current());
         for(uint i = 0; i<_userIds.current(); i++){
             User storage user = users[i+1];
@@ -46,7 +46,7 @@ contract Users is Ownable {
         return users[userId];
     }
 
-    //add
+    //put
     function registrarSale(uint256 userId, uint256 amount) public onlyOwner{
         users[userId].amountSpent += amount;
     }
