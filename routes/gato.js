@@ -11,6 +11,7 @@ router.get('/gatos',async (req,res)=>{
         res.status(500).json({ message: ex.message });
     }
 });
+//get gatos by id
 router.get('/gato/:id',async (req,res)=>{
     try{
         let gato = await gatoController.getGato(req.params.id)

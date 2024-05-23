@@ -7,6 +7,8 @@ const nfts = require('./scripts/nfts');
 const userRoutes = require('./routes/user.js')
 const saleRoutes = require('./routes/sale.js')
 const gatoRoutes = require('./routes/gato.js')
+const bebidaRoutes = require('./routes/bebida.js')
+
 const bodyParser = require('body-parser')
 app.use(bodyParser.urlencoded({
     extended:true
@@ -17,6 +19,7 @@ app.use(bodyParser.json())
 app.use('/api',userRoutes)
 app.use('/api',saleRoutes)
 app.use('/api',gatoRoutes)
+app.use('/api',bebidaRoutes)
 
 //pal css y el html y jaladas y todo lo que se referencie sepa donde esta
 app.use(express.static("page"))
