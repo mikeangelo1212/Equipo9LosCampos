@@ -4,6 +4,7 @@ const app = express();
 const path = require('path');
 const fs = require('fs');
 const nfts = require('./scripts/nfts');
+<<<<<<< HEAD
 const userRoutes = require('./routes/user.js');
 const saleRoutes = require('./routes/sale.js');
 const gatoRoutes = require('./routes/gato.js');
@@ -13,6 +14,24 @@ const ticketRoutes = require('./routes/ticket.js');
 const bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+=======
+const userRoutes = require('./routes/user.js')
+const saleRoutes = require('./routes/sale.js')
+const gatoRoutes = require('./routes/gato.js')
+const bebidaRoutes = require('./routes/bebida.js')
+
+const bodyParser = require('body-parser')
+app.use(bodyParser.urlencoded({
+    extended:true
+}))
+app.use(bodyParser.json())
+
+//esto relaciona nuestra '/api' con las otras partes de los comandos
+app.use('/api',userRoutes)
+app.use('/api',saleRoutes)
+app.use('/api',gatoRoutes)
+app.use('/api',bebidaRoutes)
+>>>>>>> f3d51ea71ede2825b9a0128efa87a9bd1c562c2a
 
 // Esto relaciona nuestra '/api' con las otras partes de los comandos
 app.use('/api', userRoutes);
