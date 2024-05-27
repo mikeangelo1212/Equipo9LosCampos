@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cat bar</title>
+    <link rel="stylesheet" type="text/css" href="Gatitos.css">   
+</head>
+<body>
+    <h1>Bienvenido a nuestra taberna</h1> 
+    <form id="gatoForm" action="api/gato" method="POST">
+        <div class="img-fluid" alt="GIF Happy"></div>
+        <h1>Con gatitos [YIPPIIE]</h1>
+        <!--Esto es solo para que pueda desplegarse los div correspondientes al boton-->
+        <input type="checkbox" id="toggle1">
+        <input type="checkbox" id="toggle2">
+        <input type="checkbox" id="toggle3">
+        <input type="checkbox" id="toggle4">
+        <input type="checkbox" id="toggle5">
+        <h2>Seleccione la accion que desee hacer: </h2>
+        <label for="toggle1" id="GatitoIngreso">Ingresar gatito</label> 
+        <label for="toggle2" id="GatitoLista">Lista de gatitos</label>
+        <label for="toggle3" id="BebidaLista">Menu de bebidas</label>
+        <label for="toggle0" id="BebidaIngreso">Ingreso de bebida</label>
+        <label for="toggle4" id="TicketLista">Consulta de tickets</label>
+        <label for="toggle5" id="TicketFactura">Crear un ticket</label>
+        <!--GATITO INGRESO-->
+        <div id="divIngresoGatito">
+            <h1>Ingreso de gatitos</h1>
+            <h2>Introduzca el nombre del gatito: </h2>
+            <input type="text" id="nombregato" name="nombre" required>
+            <h2>Especifique el color del gato: </h2>
+            <input type="text" id="colorgato" name="color" required>
+            <h2> Introduzca su sexo: <h2>
+            <input type="text" id="sexogato" name="sexo" required>
+            <h2> Introduzca su edad: <h2>
+            <input type="text" id="edadgato" name="edad" required>
+            <h2><button type="submit">Confirmar</button></h2>
+            <img src="resources/Spin.gif" class="img-cat" alt="GIF Spin" width="200" height="150">
+                <!--Verificar como funciona, porque tapa todo xd-->
+                <img id="imagenExito" class="img-success" src="resources/Crunch.gif" alt="Transacción Exitosa">
+                <h2 id="textoExito" class="img-success" alt="Transacción Exitosa Texto">¡Tu transacción ha sido aprobada!</h2>
+        </div>
+        <!--GATITO LISTA-->
+        <div id="divListaGatito">
+            <h1>Lista de gatitos</h1>
+        </div>
+        <!--BEBIDAS MENU-->
+        <div id="divBebidas">
+            <h1>Menu</h1>
+            <table id="bebidasTable">
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Sabor</th>
+                        <th>Precio</th>
+                    </tr>
+                </thead>
+                <tbody id="bebidasBody">
+                    <!--Insercion de datos-->
+                </tbody>
+            </table>
+        </div>
+        <!--TICKETS CONSULTA-->
+        <div id="divTickets">
+            <h1>Lista de tickets</h1>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Ticket ID</th>
+                        <th>Clave del Gato</th>
+                        <th>Items</th>
+                    </tr>
+                </thead>
+                <tbody id="ticketsBody">
+                </tbody>
+            </table>
+        </div>     
+    </form>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+//GATOS INGRESO
+            const form = document.getElementById('gatoForm');
+            form.addEventListener('submit', function(event) {
+                event.preventDefault();
+    
+                const nombre = document.getElementById('nombregato').value;
+                const color = document.getElementById('colorgato').value;
+                const sexo = document.getElementById('sexogato').value;
+                const edad = document.getElementById('edadgato').value;
+    
+                const gatoData = {
+                    nombre: nombre,
+                    color: color,
+                    sexo: sexo,
+                    edad: edad
+                };
+    
+                const jsonData = JSON.stringify(gatoData);
+    
+                fetch(form.action, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: jsonData
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Error al enviar datos');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log('Datos enviados correctamente:', data);
+                    const imagenExito = document.getElementById('imagenExito');
+                    imagenExito.style.display = 'none';
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+            });
+    
+//LISTA DE GATO
+            const divListaGatito = document.getElementById('divListaGatito');
+            const labelGatitoLista = document.getElementById('GatitoLista');
+                fetch('api/gatos')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Error al obtener los datos de los gatos');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    const tabla = document.createElement('table');
+                    tabla.innerHTML = `
+                        <thead>
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Color</th>
+                                <th>Sexo</th>
+                                <th>Edad</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${data.map(gato => `
+                                <tr>
+                                    <td>${gato.nombreGato}</td>
+                                    <td>${gato.colorGato}</td>
+                                    <td>${gato.sexo}</td>
+                                    <td>${gato.edad}</td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    `;
+                    divListaGatito.appendChild(tabla);
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+            });
+    
+//BEBIDAS
+            const divBebidas = document.getElementById('divBebidas');
+            const labelBebidaLista = document.getElementById('BebidaLista');
+            labelBebidaLista.addEventListener('click', function() {
+                fetch('/api/bebidas')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Error al obtener los datos de las bebidas');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    const bebidasBody = document.getElementById('bebidasBody');
+                    bebidasBody.innerHTML = '';
+                    data.forEach(bebida => {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td>${bebida.nombreBebida}</td>
+                            <td>${bebida.sabor}</td>
+                            <td>${bebida.precio}</td>
+                        `;
+                        bebidasBody.appendChild(row);
+                    });
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+            });
+// TICKETS
+const divTickets = document.getElementById('divTickets');
+const labelTicketLista = document.getElementById('TicketLista');
+
+labelTicketLista.addEventListener('click', function() {
+    fetch('/api/tickets')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Error al obtener los datos de los tickets');
+            }
+            return response.json();
+        })
+        .then(data => {
+            const ticketsBody = document.getElementById('ticketsBody');
+            ticketsBody.innerHTML = '';
+            data.forEach(ticket => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${ticket.ticketId}</td>
+                    <td>${ticket.claveGato}</td>
+                    <td>
+                        <ul>
+                            ${ticket.item.map(item => `<li>${item.name} - $${item.price}</li>`).join('')}
+                        </ul>
+                    </td>
+                `;
+                ticketsBody.appendChild(row);
+            });
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+});
+
+//CREACION DE TICKETS
+    document.getElementById('TicketFactura').addEventListener('click', function() {
+            // Redirigir a otro HTML
+            window.location.href = 'http://localhost:3000/tickets';
+        });
+
+        document.getElementById('BebidaIngreso').addEventListener('click', function() {
+            // Redirigir a otro HTML
+            window.location.href = 'http://localhost:3000/bebidas';
+        });
+    </script>
+</body>
+</html>

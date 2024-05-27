@@ -1,0 +1,171 @@
+h1{
+    text-align:center;
+    color: rgb(165, 42, 104);
+    font-family: 'BigNoodleTitling';
+    font-style: italic;
+    font-size: 42px;
+}
+
+button{
+    text-align: center;
+    border-color: rgb(165, 42, 104);
+}
+
+/*                              A N I M A C I O N E S                               */
+
+#toggle1 {
+    display: none;
+}
+
+#toggle2 {
+    display: none;
+}
+
+#toggle3 {
+    display: none;
+}
+
+#toggle4 {
+    display: none;
+}
+
+#toggle5 {
+    display: none;
+}
+
+#divIngresoGatito{
+    display: none;
+}
+
+#divListaGatito{
+    display: none;
+}
+
+#divBebidas{
+    display: none;
+}
+
+#divTickets{
+    display: none;
+}
+
+#divTicketsCreacion{
+    display: none;
+}
+
+#toggle1:checked ~ #divIngresoGatito{
+    display: block;
+}
+
+#toggle2:checked ~ #divListaGatito{
+    display: block;
+}
+
+#toggle3:checked ~ #divBebidas{
+    display: block;
+}
+
+#toggle4:checked ~ #divTickets{
+    display: block;
+}
+
+#toggle5:checked ~ #divTicketsCreacion{
+    display: block;
+}
+
+/*                             I M A G E N E S                              */
+.img-success {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 20;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+    max-width: 50%;
+    max-height: 50%;
+    text-align: center;
+    padding-top: 20px;
+}
+.img-success img {
+    max-width: 50%;
+    max-height: 50%;
+}
+
+.img-success h2 {
+    font-size: 24px;
+    color: #000;
+    margin-top: 10px;
+}
+
+.img-fluid{
+    width: 300px;
+    height: 200px;
+    background-image: url('resources/Happy.gif');
+    background-repeat: no-repeat;
+    background-position: 0px -40px;
+    background-size: cover;
+    transition: background-image 0.2s ease-in-out;
+    border-style: double;
+    border-color: rgb(221, 171, 182);
+    border-radius: 50%;
+}
+
+.img-fluid:hover{
+    background-position: 0px;
+    background-image: url('resources/Fresh.gif');
+    border-style: double;
+    border-color: rgb(221, 171, 182);
+    border-radius: 50%;
+}
+
+img:hover{
+    border-style: double;
+    border-color: rgb(221, 171, 182);
+    border-radius: 50%;
+}
+
+/*                                  D A T O S                                 */
+body{
+background-color: rgb(224, 212, 190);
+text-align: center;
+}
+
+div{
+    background-color: rgb(221, 171, 182);
+    width: 50%;
+    height: 100%;
+    margin: auto;
+    border-style:dotted;
+    border-color: rgb(165, 42, 104);
+}
+
+button{
+    background-color: rgb(255, 255, 255);
+    font-weight: bolder;
+}
+
+label{
+    background-color: rgb(221, 171, 182);
+    font-weight: bolder;
+    border-style: solid;
+    border-width: 1px;
+}
+
+/*                                  T A B L A S                                 */
+table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  th, td {
+    padding: 8px;
+    text-align: left;
+    border-bottom: 1px solid #ff899a;
+  }
+  
+  /* Estilos para la primera fila (encabezado) de la tabla */
+  th {
+    background-color: #f75d74;
+    color: #333;
+  }

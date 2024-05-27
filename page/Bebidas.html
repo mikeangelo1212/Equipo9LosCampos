@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bebidas gato</title>
+    <link rel="stylesheet" type="text/css" href="Gatitos.css">   
+</head>
+<body>
+    <button type="button" id="regresarBtn">Regresar al menú principal</button>
+    <h1>Agregar nueva bebida</h1>
+    <form id="agregarBebidaForm" action="api/bebida" method="POST">
+        <table>
+            <tr>
+                <td><label for="nombreBebida">Nombre:</label></td> <!--Esta no pasaaaa-->
+                <td><input type="text" id="nombreBebida" name="nombreBebida" required></td>
+            </tr>
+            <tr>
+                <td><label for="saborBebida">Sabor:</label></td>
+                <td><input type="text" id="saborBebida" name="saborBebida" required></td>
+            </tr>
+            
+            <tr>
+                <td><label for="precioBebida">Precio:</label></td>
+                <td><input type="number" id="precioBebida" name="precioBebida" min="0.01" step="0.01" required></td>
+            </tr>
+        </table>
+        <button type="submit">Agregar Bebida</button>
+    </form>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('agregarBebidaForm');
+
+            form.addEventListener('submit', function(event) {
+                event.preventDefault(); // Evitar el envío predeterminado del formulario
+                console.log('Evento de envío del formulario activado');
+
+                const nombre = document.getElementById('nombreBebida').value;
+                const sabor = document.getElementById('saborBebida').value;
+                const precio = parseFloat(document.getElementById('precioBebida').value);
+                console.log('Datos del formulario:', nombre, sabor, precio);
+
+                const nuevaBebida = {
+                    nombreBebida: nombre,
+                    sabor: sabor,
+                    precio: precio
+                };
+
+                // Enviar datos al servidor
+                fetch('/api/bebida', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(nuevaBebida)
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Error al agregar la bebida');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log('Bebida agregada:', data);
+                    // Aquí podrías realizar cualquier otra acción, como mostrar un mensaje de éxito o actualizar la lista de bebidas
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+            });
+        });
+
+        document.getElementById('regresarBtn').addEventListener('click', function() {
+            window.location.href = 'http://localhost:3000';
+        });
+    </script>
+</body>
+</html>

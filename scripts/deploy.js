@@ -3,7 +3,7 @@ const fs = require("fs");
 const {ethers} = require('hardhat')
 async function main(){
 
-    const Users = await ethers.getContractFactory('Gato');
+    const Users = await ethers.getContractFactory('ContratoTicket');
     const users = await Users.deploy();
     const txHash = users.deployTransaction.hash;
     const txReceipt=await ethers.provider.waitForTransaction(txHash);

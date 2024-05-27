@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ticket de gatito</title>
+    <link rel="stylesheet" type="text/css" href="Gatitos.css">   
+</head>
+<body>
+    <button type="button" id="regresarBtn">Regresar al menú principal</button>
+    <form id="ticketNuevo" action="api/ticket" method="POST">
+        <h1>Facturación del ticket</h1>
+        <h2>Selecciona un gato al que comprar la bebida:</h2>
+        <select id="selectGatos" name="gato" required></select>
+        <div id="bebidas">
+        </div>
+        <h2>Total: $<span id="totalAmount">0.00</span></h2>
+        <button type="submit">Ticket</button>
+    </form>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            let bebidas = []; // Array para almacenar los nombres y precios de las bebidas
+
+            // Fetch de datos de gatos
+            fetch('/api/gatos')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Error al obtener los datos de los gatos');
+                }
+                return response.json();
+            })
+            .then(data => {
+                const selectGatos = document.getElementById("selectGatos");
+                data.forEach(gato => {
+                    const option = document.createElement("option");
+                    option.value = gato.gatoId;
+                    option.text = gato.nombreGato;
+                    selectGatos.appendChild(option);
+                });
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+
+            // Fetch de datos de bebidas
+            fetch('/api/bebidas')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Error al obtener los datos de las bebidas');
+                }
+                return response.json();
+            })
+            .then(data => {
+                const bebidasDiv = document.getElementById("bebidas");
+                data.forEach(bebida => {
+                    const div = document.createElement("div");
+                    const h2 = document.createElement("h2");
+                    h2.textContent = `${bebida.nombreBebida} - $${bebida.precio}`;
+                    const label = document.createElement("label");
+                    label.textContent = `Cantidad`; 
+                    const decrementButton = document.createElement("button");
+                    decrementButton.setAttribute("type", "button");
+                    decrementButton.classList.add("decrementarBebida");
+                    decrementButton.textContent = "-";
+                    const input = document.createElement("input");
+                    input.setAttribute("type", "text");
+                    input.classList.add("cantidadBebida");
+                    input.setAttribute("data-price", bebida.precio);
+                    input.setAttribute("data-name", bebida.nombreBebida);
+                    input.value = "0";
+                    const incrementButton = document.createElement("button");
+                    incrementButton.setAttribute("type", "button");
+                    incrementButton.classList.add("incrementarBebida");
+                    incrementButton.textContent = "+";
+                    div.appendChild(h2);
+                    div.appendChild(label);
+                    div.appendChild(decrementButton);
+                    div.appendChild(input);
+                    div.appendChild(incrementButton);
+                    bebidasDiv.appendChild(div);
+
+                    // Event listeners para los botones de incremento y decremento
+                    incrementButton.addEventListener('click', function() {
+                        const input = this.parentElement.querySelector(".cantidadBebida");
+                        input.value = parseInt(input.value) + 1;
+                        calcularTotal();
+                    });
+
+                    decrementButton.addEventListener('click', function() {
+                        const input = this.parentElement.querySelector(".cantidadBebida");
+                        const cantidad = parseInt(input.value);
+                        if (cantidad > 0) {
+                            input.value = cantidad - 1;
+                            calcularTotal();
+                        }
+                    });
+
+                    bebidas.push({ nombre: bebida.nombreBebida, precio: bebida.precio }); // Almacenar el nombre y precio de la bebida
+                });
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+
+            // Función para calcular el total
+            function calcularTotal() {
+                let total = 0;
+                const bebidasInputs = document.querySelectorAll('.cantidadBebida');
+                bebidasInputs.forEach(bebidaInput => {
+                    const cantidad = parseInt(bebidaInput.value);
+                    const nombreBebida = bebidaInput.getAttribute('data-name');
+                    const precioBebida = bebidas.find(b => b.nombre === nombreBebida).precio;
+                    total += cantidad * precioBebida;
+                });
+                document.getElementById('totalAmount').textContent = total.toFixed(2);
+            }
+
+            // Event listener para el envío del formulario
+            document.getElementById('ticketNuevo').addEventListener('submit', function(event) {
+                event.preventDefault(); // Evitar el envío predeterminado del formulario
+
+                const gatoSeleccionado = document.getElementById('selectGatos').value;
+                const bebidasInputs = document.querySelectorAll('.cantidadBebida');
+
+                const names = [];
+                const prices = [];
+
+                bebidasInputs.forEach(bebidaInput => {
+                    const cantidad = bebidaInput.value;
+                    if (cantidad > 0) {
+                        const name = bebidaInput.getAttribute('data-name');
+                        const price = bebidaInput.getAttribute('data-price');
+                        for (let i = 0; i < cantidad; i++) {
+                            names.push(name);
+                            prices.push(parseFloat(price));
+                        }
+                    }
+                });
+
+                const ticketData = {
+                    gatoId: parseInt(gatoSeleccionado),
+                    items: names, 
+                    precios: prices
+                };
+
+                const jsonData = JSON.stringify(ticketData);
+                console.log(JSON.stringify(ticketData))
+
+                fetch(this.action, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: jsonData
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Error al crear el ticket');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log('Ticket creado:', data);
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+            });
+
+            document.getElementById('regresarBtn').addEventListener('click', function() {
+                window.location.href = 'http://localhost:3000';
+            });
+
+            // Convertir los nombres de las bebidas a formato de arreglo
+            const nombresBebidasArreglo = bebidas.map(bebida => bebida.nombre);
+            console.log('Nombres de las bebidas:', nombresBebidasArreglo);
+        });
+    </script>
+</body>
+</html>

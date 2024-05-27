@@ -31,7 +31,7 @@ contract ContratoTicket is Ownable {
     // }
 
     // Función para agregar un nuevo ticket
-    function insertTicker(uint256 gatoId,string[] memory items, uint256[] memory precios)
+    function insertTicket(uint256 gatoId,string[] memory items, uint256[] memory precios)
     public onlyOwner returns(uint256) {
         _ticketsId.increment();
         uint256 newTicketId = _ticketsId.current();
